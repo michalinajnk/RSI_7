@@ -148,7 +148,7 @@
                 $("#Awarded").val("");
             }
             function successCallback(response) {
-
+                location.reload();
                 if (response.responseCode == 200) {
                     resetForm();
                     bootbox.alert(response.responseMessage, function() {

@@ -95,6 +95,7 @@ namespace RSI_7.Controllers
         public JsonResult InsertBook(IFormCollection formcollection)
         {
             BookModel book = new BookModel();
+            if (book.Id == 0) book.Id = books.Max(x => x.Id) + 1;
             book.Author = formcollection["Author"];
             book.Title = formcollection["Title"];
             book.wasRewarded = bool.Parse(formcollection["Awarded"]);
