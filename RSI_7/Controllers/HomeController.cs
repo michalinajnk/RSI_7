@@ -15,6 +15,14 @@ namespace RSI_7.Controllers
 
         private readonly ILogger<HomeController> _logger;
         public static List<BookModel> books = new List<BookModel>();
+
+        public void replaceBook(BookModel bookToReplace) {
+            int bookIdxToReplace = books.FindIndex(x => x.Id == bookToReplace.Id);
+            books.RemoveAt(bookIdxToReplace);
+            books.Insert(bookIdxToReplace, bookToReplace);
+            
+        }
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -81,7 +89,6 @@ namespace RSI_7.Controllers
         }
 
        
-
         [HttpPost]
         public JsonResult InsertBook(IFormCollection formcollection)
         {
@@ -114,6 +121,7 @@ namespace RSI_7.Controllers
             book.Author = formcollection["Author"];
             book.Title = formcollection["Title"];
             book.wasRewarded = bool.Parse(formcollection["Awarded"]);
+            replaceBook(book);
 
 
             JsonResponseViewModel model = new JsonResponseViewModel();
@@ -135,12 +143,13 @@ namespace RSI_7.Controllers
         {
             BookModel book = new BookModel();
             book.Id = int.Parse(formcollection["id"]);
+            int bookIdxToReplace = books.FindIndex(x => x.Id ==  book.Id);
 
             JsonResponseViewModel model = new JsonResponseViewModel();
             //MAKE DB CALL and handle the response
             if (book != null)
             {
-                books.Remove(book);
+                books.RemoveAt(bookIdxToReplace);
                 model.ResponseCode = 200;
                 model.ResponseMessage = JsonConvert.SerializeObject(book);
             }
