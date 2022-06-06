@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RSI_7.Models;
@@ -31,8 +32,39 @@ namespace RSI_7.Controllers
 
         
         [HttpGet]
+        public JsonResult CountBooks()
+        {
+
+            JsonResponseViewModel model = new JsonResponseViewModel();
+            if (books.Count != 0)
+            {
+                model.ResponseCode = 200;
+                model.ResponseMessage =JsonConvert.SerializeObject(books.Count);
+            }
+            else
+            {
+                model.ResponseCode = 404;
+                model.ResponseMessage = "Books not found";
+            }
+            return Json(model);
+        }
+
+
+        [HttpGet]
+        public JsonResult displayMyData()
+        {
+
+            JsonResponseViewModel model = new JsonResponseViewModel();
+            model.ResponseCode = 200;
+            model.ResponseMessage =JsonConvert.SerializeObject(MyData.string_info());
+            
+            return Json(model);
+        }
+
+        [HttpGet]
         public JsonResult GetDetailsById(int id)
         {
+
             var book = books.Where(d => d.Id.Equals(id)).FirstOrDefault();
             JsonResponseViewModel model = new JsonResponseViewModel();
             if (book != null)
@@ -48,66 +80,67 @@ namespace RSI_7.Controllers
             return Json(model);
         }
 
-        /*
         [HttpPost]
-        public JsonResult InsertStudent(IFormCollection formcollection)
+        public JsonResult InsertBook(IFormCollection formcollection)
         {
-            BookModel student = new BookModel();
-            student.Author = formcollection["Author"];
-            student.Name = formcollection["name"];
-
+            BookModel book = new BookModel();
+            book.Author = formcollection["Author"];
+            book.Title = formcollection["Title"];
+            book.wasRewarded = bool.Parse(formcollection["Awarded"]);
             JsonResponseViewModel model = new JsonResponseViewModel();
             //MAKE DB CALL and handle the response
-            if (student != null)
+            if (book != null)
             {
-                model.ResponseCode = 0;
-                model.ResponseMessage = JsonConvert.SerializeObject(student);
+                model.ResponseCode = 200;
+                model.ResponseMessage = JsonConvert.SerializeObject(book);
             }
             else
             {
-                model.ResponseCode = 1;
+                model.ResponseCode = 404;
                 model.ResponseMessage = "No record available";
             }
             return Json(model);
         }
         [HttpPut]
-        public JsonResult UpdateStudent(IFormCollection formcollection)
+        public JsonResult UpdateBook(IFormCollection formcollection)
         {
-            BookModel student = new BookModel();
-            student.Id = int.Parse(formcollection["id"]);
-            student.Author = formcollection["Author"];
-            student.Name = formcollection["name"];
+            BookModel book = new BookModel();
+            book.Id = int.Parse(formcollection["id"]);
+            book.Author = formcollection["Author"];
+            book.Title = formcollection["Title"];
+            book.wasRewarded = bool.Parse(formcollection["Awarded"]);
+
 
             JsonResponseViewModel model = new JsonResponseViewModel();
             //MAKE DB CALL and handle the response
-            if (student != null)
+            if (book != null)
             {
-                model.ResponseCode = 0;
-                model.ResponseMessage = JsonConvert.SerializeObject(student);
+                model.ResponseCode = 200;
+                model.ResponseMessage = JsonConvert.SerializeObject(book);
             }
             else
             {
-                model.ResponseCode = 1;
+                model.ResponseCode =404;
                 model.ResponseMessage = "No record available";
             }
             return Json(model);
         }
         [HttpDelete]
-        public JsonResult DeleteStudent(IFormCollection formcollection)
+        public JsonResult DeleteBook(IFormCollection formcollection)
         {
-            BookModel student = new BookModel();
-            student.Id = int.Parse(formcollection["id"]);
+            BookModel book = new BookModel();
+            book.Id = int.Parse(formcollection["id"]);
 
             JsonResponseViewModel model = new JsonResponseViewModel();
             //MAKE DB CALL and handle the response
-            if (student != null)
+            if (book != null)
             {
-                model.ResponseCode = 0;
-                model.ResponseMessage = JsonConvert.SerializeObject(student);
+                model.ResponseCode = 200;
+                model.ResponseMessage = JsonConvert.SerializeObject(book);
             }
             else
             {
-                model.ResponseCode = 1;
+                model.ResponseCode = 404;
                 model.ResponseMessage = "No record available";
             }
             return Json(model);
@@ -122,8 +155,8 @@ namespace RSI_7.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
-        */
+    
+        
     }
       
     

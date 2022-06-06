@@ -10,6 +10,6 @@ namespace RSI_7.Models
         public int Id { get; set; }
         public string Author { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public bool wasRewarded { get; set; }
+        public bool wasRewarded { get; set; } = false;
     }
 }

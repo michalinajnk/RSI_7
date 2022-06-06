@@ -7,7 +7,8 @@
     <script>
         $(document).ready(function() {
             // GET BY ID
-            $(".btn-get-book").on("click", function() {
+            $(".btn-get-book").on("click", function () {
+
                 var formData = new FormData();
                 var bookid = $(this).attr("data-bookid");
                 var url = '@Url.Action("GetDetailsById", "Home")' + '/' + bookid;
@@ -18,10 +19,10 @@
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
+
                         if (response.responseCode == 200) {
                             var book = JSON.parse(response.responseMessage);
-<a href="C:\Users\Michalina\source\repos\RSI_7\RSI_7\Controllers\HomeController.cs">C:\Users\Michalina\source\repos\RSI_7\RSI_7\Controllers\HomeController.cs</a>
                             $("#Title").val(book.Title);
                             $("#Author").val(book.Author);
                             $("#Awarded").val(book.wasRewarded);
@@ -36,6 +37,7 @@
                     error: errorCallback
                 });
             });
+
             //SAVE
             $("#btn-insert-book").on("click", function() {
                 var formData = new FormData();
@@ -44,7 +46,7 @@
                 formData.append("Awarded", $("#Awarded").val());
                 $.ajax({
                     type: 'POST',
-                    url: '@Url.Action("Insertbook", "Home")',
+                    url: '@Url.Action("InsertBook", "Home")',
                     contentType: false,
                     processData: false,
                     cache: false,
@@ -55,15 +57,53 @@
             });
             $("#btn-count-books").on("click", function() {
                 var formData = new FormData();
-                formData.append("Number of books", $("#bookCounter").val());
-                $.ajax({
-                    type: 'PUT',
-                    url: '@Url.Action("Countbooks", "Home")',
+                var url = '@Url.Action("CountBooks", "Home")';
+
+                 $.ajax({
+                    type: 'GET',
+                    url: url,
                     contentType: false,
                     processData: false,
                     cache: false,
                     data: formData,
-                    success: successCallback,
+                     success: function(response) {
+
+                         if (response.responseCode == 200) {
+                             var countBooks = JSON.parse(response.responseMessage);
+                             $("#countBooks").val(countBooks);
+
+
+                         }
+                         else {
+                             bootbox.alert(response.ResponseMessage);
+                         }
+                     },
+                    error: errorCallback
+                });
+            });
+
+             $("#btn-my-data").on("click", function() {
+                var formData = new FormData();
+                var url = '@Url.Action("displayMyData", "Home")';
+
+                 $.ajax({
+                    type: 'GET',
+                    url: url,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    data: formData,
+                     success: function(response) {
+
+                         if (response.responseCode == 200) {
+                             var myData = JSON.parse(response.responseMessage);
+                             $("#myData").val(myData);
+
+                         }
+                         else {
+                             bootbox.alert(response.ResponseMessage);
+                         }
+                     },
                     error: errorCallback
                 });
             });
@@ -76,7 +116,7 @@
                 formData.append("Awarded", $("#Awarded").val());
                 $.ajax({
                     type: 'PUT',
-                    url: '@Url.Action("Updatebook", "Home")',
+                    url: '@Url.Action("UpdateBook", "Home")',
                     contentType: false,
                     processData: false,
                     cache: false,
@@ -87,12 +127,12 @@
             });
               //DELETE
             $("#btn-delete-book").on("click", function() {
-                debugger;
+
                 var formData = new FormData();
                 formData.append("id", $("#hdn-book-id").val());
                 $.ajax({
                     type: 'DELETE',
-                    url: '@Url.Action("Deletebook", "Home")',
+                    url: '@Url.Action("DeleteBook", "Home")',
                     contentType: false,
                     processData: false,
                     cache: false,
@@ -105,10 +145,10 @@
                 $("#hdn-book-id").val("");
                 $("#Author").val("");
                 $("#Title").val("");
-                $("#Awarded").val());
+                $("#Awarded").val("");
             }
             function successCallback(response) {
-                debugger;
+
                 if (response.responseCode == 200) {
                     resetForm();
                     bootbox.alert(response.responseMessage, function() {
@@ -126,6 +166,7 @@
         });
     </script>
 }
+
 <div class="text-center">
     <h1 class="display-4">Welcome To Book database</h1>
     <hr />
@@ -159,12 +200,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <label for="Number of books" class="form-label">bookCounter</label>
-                    <input type="text" class="form-control" id="bookCounter" placeholder="Display number of books" value="" required="">
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
+
 
             </div>
             <table class="table">
@@ -177,7 +213,7 @@
                         <td>
                             <a href="javascript:void(0)" class="btn btn-danger" id="btn-delete-book">Delete book</a>
                         </td>
-                        <td>  <a href="javascript:void(0)" class="btn btn-info" id="btn-count-books">Count books</a></td>
+
 
                     </tr>
                 </tbody>
@@ -221,6 +257,12 @@
 
 
         </table>
+        <a href="javascript:void(0)" class="btn btn-info" id="btn-count-books">Count books</a>
+        <input type="number" class="form-control" id="countBooks" placeholder="Display the number of books in database" value="" required="">
+
+        <a href="javascript:void(0)" class="btn btn-info" id="btn-my-data">My Data</a>
+        <input type="text" class="form-control" id="myData" placeholder="Display MyData" value="" required="">
+
     </div>
-</div>
+    </div>
 
