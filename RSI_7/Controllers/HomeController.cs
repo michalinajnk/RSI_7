@@ -16,6 +16,13 @@ namespace RSI_7.Controllers
         private readonly ILogger<HomeController> _logger;
         public static List<BookModel> books = new List<BookModel>();
 
+        static HomeController(){
+            books.Add(new BookModel() { Id = 1, Author = "Mróz", Title = "Ankush", wasRewarded = true });
+            books.Add(new BookModel() { Id = 2, Author = "Topka", Title = "Rohit", wasRewarded = true });
+            books.Add(new BookModel() { Id = 3, Author = "Conan-Doyle", Title = "Sherlock Holmes", wasRewarded = true });
+            books.Add(new BookModel() { Id = 4, Author = "Szczygieł", Title = "Nie ma", wasRewarded = false });
+        }
+
         public void replaceBook(BookModel bookToReplace) {
             int bookIdxToReplace = books.FindIndex(x => x.Id == bookToReplace.Id);
             books.RemoveAt(bookIdxToReplace);
@@ -26,11 +33,6 @@ namespace RSI_7.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            books = new List<BookModel>();
-            books.Add(new BookModel() { Id = 1, Author = "Mróz", Title = "Ankush", wasRewarded=true });
-            books.Add(new BookModel() { Id = 2, Author = "Topka", Title = "Rohit", wasRewarded=true });
-            books.Add(new BookModel() { Id = 3, Author = "Conan-Doyle", Title = "Sherlock Holmes", wasRewarded=true });
-            books.Add(new BookModel() { Id = 4, Author = "Szczygieł", Title = "Nie ma", wasRewarded=false });
         }
 
         public IActionResult Index()
