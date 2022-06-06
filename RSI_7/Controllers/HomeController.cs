@@ -39,7 +39,7 @@ namespace RSI_7.Controllers
             if (books.Count != 0)
             {
                 model.ResponseCode = 200;
-                model.ResponseMessage =JsonConvert.SerializeObject(books.Count);
+                model.ResponseMessage = JsonConvert.SerializeObject(books.Count);
             }
             else
             {
@@ -80,6 +80,8 @@ namespace RSI_7.Controllers
             return Json(model);
         }
 
+       
+
         [HttpPost]
         public JsonResult InsertBook(IFormCollection formcollection)
         {
@@ -87,10 +89,12 @@ namespace RSI_7.Controllers
             book.Author = formcollection["Author"];
             book.Title = formcollection["Title"];
             book.wasRewarded = bool.Parse(formcollection["Awarded"]);
+
             JsonResponseViewModel model = new JsonResponseViewModel();
             //MAKE DB CALL and handle the response
             if (book != null)
             {
+                books.Add(book);
                 model.ResponseCode = 200;
                 model.ResponseMessage = JsonConvert.SerializeObject(book);
             }
@@ -101,6 +105,7 @@ namespace RSI_7.Controllers
             }
             return Json(model);
         }
+
         [HttpPut]
         public JsonResult UpdateBook(IFormCollection formcollection)
         {
@@ -135,6 +140,7 @@ namespace RSI_7.Controllers
             //MAKE DB CALL and handle the response
             if (book != null)
             {
+                books.Remove(book);
                 model.ResponseCode = 200;
                 model.ResponseMessage = JsonConvert.SerializeObject(book);
             }

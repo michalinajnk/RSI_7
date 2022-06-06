@@ -81,7 +81,7 @@
                     error: errorCallback
                 });
             });
-
+            
              $("#btn-my-data").on("click", function() {
                 var formData = new FormData();
                 var url = '@Url.Action("displayMyData", "Home")';
@@ -152,8 +152,7 @@
                 if (response.responseCode == 200) {
                     resetForm();
                     bootbox.alert(response.responseMessage, function() {
-
-                        //PERFORM REMAINING LOGIC
+                           
                     });
                 }
                 else {
@@ -185,7 +184,7 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label for="lastAuthor" class="form-label">Author</label>
+                    <label for="Author" class="form-label">Author</label>
                     <input type="text" class="form-control" id="Author" placeholder="Enter the Author" value="" required="">
                     <div class="invalid-feedback">
                         Author is required.
@@ -196,7 +195,7 @@
                     <label for="Awarded" class="form-label">Awarded</label>
                     <input type="text" class="form-control" id="Awarded" placeholder="Enter whether the book was awarded" value="" required="">
                     <div class="invalid-feedback">
-
+                        Please enter a valid value (true/false).
                     </div>
                 </div>
 
@@ -224,45 +223,49 @@
     </div>
     <br />
 </div>
+
 <div class="row">
     <div class="col-md-12">
+
         <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <td>#</td>
-                    <td>Author</td>
-                    <td>Title</td>
-                    <td>Awarded</td>
-                    <td>Action</td>
-                </tr>
-            </thead>
-            <tbody id="book-list">
-                @{
+          
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Author</td>
+                        <td>Title</td>
+                        <td>Awarded</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
 
-                    foreach (var book in Model)
-                    {
-                        <tr>
-                            <td>@book.Id</td>
-                            <td>@book.Author</td>
-                            <td>@book.Title</td>
-                            <td>@book.wasRewarded</td>
-                            <td>
-                                <a href="javascript:void(0)" data-bookid="@book.Id" class="btn btn-success btn-get-book">Get book</a>
-                            </td>
-                        </tr>
+                <tbody id="book-list">
+                    @{
+
+                        foreach (var book in Model)
+                        {
+                            <tr>
+                                <td>@book.Id</td>
+                                <td>@book.Author</td>
+                                <td>@book.Title</td>
+                                <td>@book.wasRewarded</td>
+                                <td>
+                                    <a href="javascript:void(0)" data-bookid="@book.Id" class="btn btn-success btn-get-book">Get book</a>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
 
-            </tbody>
+                </tbody>
 
 
-        </table>
-        <a href="javascript:void(0)" class="btn btn-info" id="btn-count-books">Count books</a>
-        <input type="number" class="form-control" id="countBooks" placeholder="Display the number of books in database" value="" required="">
+            </table>
+            <a href="javascript:void(0)" class="btn btn-info" id="btn-count-books">Count books</a>
+            <input type="number" class="form-control" id="countBooks" placeholder="Display the number of books in database" value="" required="">
 
-        <a href="javascript:void(0)" class="btn btn-info" id="btn-my-data">My Data</a>
-        <input type="text" class="form-control" id="myData" placeholder="Display MyData" value="" required="">
+            <a href="javascript:void(0)" class="btn btn-info" id="btn-my-data">My Data</a>
+            <input type="text" class="form-control" id="myData" placeholder="Display MyData" value="" required="">
 
-    </div>
-    </div>
+</div>
+</div>
 
